@@ -1,0 +1,65 @@
+#!/bin/zsh
+
+check_for_sudo() {
+    local cmd=$1
+    # Expand the command to check for sudo
+    local expanded=$(eval "whence -a $cmd 2>/dev/null | head -1")
+    
+    # Check if the command itself contains sudo
+    if [[ "$cmd" =~ "sudo" ]]; then
+        return 0
+    fi
+    
+    # Check if it's an alias and expand it
+    local alias_expansion=$(alias "$cmd" 2>/dev/null | sed "s/^[^=]*='//;s/'$//")
+    if [[ -n "$alias_expansion" ]] && [[ "$alias_expansion" =~ "sudo" ]]; then
+        return 0
+    fi
+    
+    return 1
+}
+
+local a=$1
+shift
+
+# Check all commands for sudo
+local needs_sudo=0
+
+# Check main program
+if check_for_sudo "$a"; then
+    needs_sudo=1
+fi
+
+# Check background programs
+for b in "$@"; do
+    if check_for_sudo "$b"; then
+        needs_sudo=1
+        break
+    fi
+done
+
+# Authenticate sudo if needed
+if [[ $needs_sudo -eq 1 ]]; then
+    echo "Authenticating sudo..."
+    sudo -v || return 1
+    sleep 0.1
+fi
+
+# Start background processes
+local pids=()
+for b in "$@"; do
+    eval "$b" &
+    pids+=$!
+done
+
+sleep 0.1
+
+trap "kill $pids 2>/dev/null; return 130" INT
+trap "kill $pids 2>/dev/null" EXIT
+
+eval "$a"
+local exit_code=$?
+
+kill $pids 2>/dev/null
+
+return $exit_code

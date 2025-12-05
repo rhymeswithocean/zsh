@@ -12,9 +12,6 @@ for _rc in ${ZDOTDIR:-$HOME}/.zshrc.d/*.zsh; do
 done
 unset _rc
 
-ZFUNCDIR=${ZDOTDIR:-$HOME}/.zfunctions
-fpath=($ZFUNCDIR $fpath)
-
 # History
 HISTFILE=$HOME/.zsh_history
 HISTSIZE=10000

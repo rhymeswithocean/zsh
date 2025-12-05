@@ -43,5 +43,5 @@ alias zbench='for i in {1..10}; do /usr/bin/time zsh -lic exit; done'
 alias zdot='cd ${ZDOTDIR:-~}'
 
 # vnc
-alias vnc = "WAYLAND_DISPLAY=wayland-1 wayvnc -o DP-1"
-alias seat = "sudo seatd -u rstudley &"
+alias vnc="WAYLAND_DISPLAY=wayland-1 wayvnc -o DP-1"
+alias seat="sudo seatd -u rstudley &"
