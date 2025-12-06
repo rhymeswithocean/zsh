@@ -44,4 +44,4 @@ alias zdot='cd ${ZDOTDIR:-~}'
 
 # vnc
 alias vnc="WAYLAND_DISPLAY=wayland-1 wayvnc -o DP-1"
-alias seat="sudo seatd -u rstudley &"
+alias seat="seatd -u rstudley &"
