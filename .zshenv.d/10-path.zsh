@@ -1,6 +1,6 @@
 typeset -U path
 
-# Define the directories you want to prepend
+# Define the directories you want to apppend
 local append_path=(
   $HOME/bin
   $HOME/sbin
@@ -17,7 +17,7 @@ local append_path=(
 # Prepend custom directories (existing ones will be moved to front due to -U)
 for dir in ${(Oa)append_path}; do
   if [[ -d $dir ]]; then
-    path=($dir $path)
+    path=($path $dir)
   fi
 done
 
