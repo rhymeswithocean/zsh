@@ -7,6 +7,7 @@
 alias _=sudo
 alias l=ls
 alias g=git
+alias lg=lazygit
 alias git-skip="git update-index --skip-worktree"
 
 # mask built-ins with better defaults
